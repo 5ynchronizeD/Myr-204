@@ -425,7 +425,7 @@ for( int i=0;i<arEnt.length();i++ ){
 	
 	if( !el.bIsValid() )continue;
 	
-	elCounter++;
+	
 	
 	String sCode = el.code();
 	
@@ -455,10 +455,13 @@ for( int i=0;i<arEnt.length();i++ ){
 		nSignY = 1;
 	}
 	
-	_PtG.append(ptElArrow);
+	
 	//draw elemnumber
 	//ONLY if it is a loadbearing or outer wall
-	if( el.loadBearing() || arSCodeOuterWalls.find(sCode) != -1 ){
+	if( el.loadBearing() || arSCodeOuterWalls.find(sCode) != -1 )
+	{
+		elCounter++;
+		_PtG.append(ptElArrow);
 		dpElNumber.draw(sElNumber, _PtG[elCounter], vxElNumber, vyElNumber ,0, nSignY * 2);
 	}
 	
@@ -1880,6 +1883,8 @@ grpFloor.addEntity(_ThisInst, TRUE, 0, 'D');
 
 #End
 #BeginThumbnail
+
+
 
 
 
