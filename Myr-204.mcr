@@ -417,12 +417,15 @@ if( bShowAs208Layout ){
 }
 
 
+int elCounter = -1;
 PlaneProfile arPpOp[0];
 for( int i=0;i<arEnt.length();i++ ){
 	Entity ent = arEnt[i];
 	ElementWallSF el = (ElementWallSF)ent;
 	
 	if( !el.bIsValid() )continue;
+	
+	elCounter++;
 	
 	String sCode = el.code();
 	
@@ -452,10 +455,11 @@ for( int i=0;i<arEnt.length();i++ ){
 		nSignY = 1;
 	}
 	
+	_PtG.append(ptElArrow);
 	//draw elemnumber
 	//ONLY if it is a loadbearing or outer wall
 	if( el.loadBearing() || arSCodeOuterWalls.find(sCode) != -1 ){
-		dpElNumber.draw(sElNumber, ptElArrow, vxElNumber, vyElNumber ,0, nSignY * 2);
+		dpElNumber.draw(sElNumber, _PtG[elCounter], vxElNumber, vyElNumber ,0, nSignY * 2);
 	}
 	
 	//Outline of wall
@@ -467,6 +471,7 @@ for( int i=0;i<arEnt.length();i++ ){
 	plZn0.createRectangle(lnSegZn0, vxEl, -vzEl);
 	PlaneProfile ppElZn0(CoordSys(csEl.ptOrg(), vxEl, -vzEl, vyEl));
 	ppElZn0.joinRing(plZn0, _kAdd);
+	
 	
 	Opening arOp[] = el.opening();
 	for( int j=0;j<arOp.length();j++ ){
@@ -510,6 +515,8 @@ for( int i=0;i<arEnt.length();i++ ){
 		CoordSys csOp = op.coordSys();
 		Point3d ptTxtOp = csOp.ptOrg() + csOp.vecX() * .5 * op.width() - csEl.vecZ() * el.zone(0).dH();
 		ptTxtOp = ptTxtOp.projectPoint(Plane(csEl.ptOrg(), csEl.vecY()), 0);
+		
+		
 		dpOpDescription.draw(sOpDescr, ptTxtOp, vxElNumber, vyElNumber, 0, -nSignY * 2);
 		
 		//only done for external walls
@@ -554,7 +561,7 @@ for( int i=0;i<arEnt.length();i++ ){
 		
 		String sWeight;
 		sWeight.formatUnit(dWeight, 2, 0);
-		dpWeight.draw(sWeight + " " + sUnit, ptElArrow, vxElNumber, vyElNumber ,0, nSignY * 8);
+		dpWeight.draw(sWeight + " " + sUnit, _PtG[elCounter], vxElNumber, vyElNumber ,0, nSignY * 8);
 	}
 	
 	arPtAllElements.append(el.plOutlineWall().vertexPoints(TRUE));
@@ -1900,4 +1907,21 @@ grpFloor.addEntity(_ThisInst, TRUE, 0, 'D');
 
 
 
+
+#End
+#BeginMapX
+<?xml version="1.0" encoding="utf-16"?>
+<Hsb_Map>
+  <lst nm="TslIDESettings">
+    <lst nm="HostSettings">
+      <dbl nm="PreviewTextHeight" ut="L" vl="1" />
+    </lst>
+    <lst nm="{E1BE2767-6E4B-4299-BBF2-FB3E14445A54}">
+      <lst nm="BreakPoints" />
+    </lst>
+  </lst>
+  <lst nm="TslInfo" />
+  <unit ut="L" uv="millimeter" />
+  <unit ut="A" uv="radian" />
+</Hsb_Map>
 #End
